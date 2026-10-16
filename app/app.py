@@ -22,7 +22,7 @@ OFFICER_TOKEN = os.environ.get("OFFICER_TOKEN", "demo-officer-token")
 
 NAME_RE = re.compile(r"^[A-Za-z][A-Za-z .'-]{2,59}$")
 CITIZENSHIP_RE = re.compile(r"^\d{2}-\d{2}-\d{2}-\d{5}$")
-PHONE_RE = re.compile(r"^9[78]\d{7,8}$")
+PHONE_RE = re.compile(r"^9[78]\d{8}$")
 
 # Which status each status can move to. Approved and Rejected are final.
 NEXT_STATUS = {

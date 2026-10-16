@@ -42,10 +42,7 @@ def test_tc04a_valid_phone_numbers_are_accepted(api, phone):
 @pytest.mark.parametrize(
     "phone",
     [
-        pytest.param(
-            "984123456", id="9-digits",
-            marks=pytest.mark.xfail(strict=True, reason="BUG-001: 9-digit phone is accepted"),
-        ),
+        pytest.param("984123456", id="9-digits"),  # BUG-001, fixed
         pytest.param("98412345678", id="11-digits"),
         pytest.param("9641234567", id="wrong-prefix-96"),
         pytest.param("01-4412345", id="landline"),
