@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Service Request Portal</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 520px; margin: 40px auto; padding: 0 16px; }
+    label { display: block; margin-top: 12px; font-weight: 600; }
+    input, select { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
+    button { margin-top: 16px; padding: 10px 16px; }
+    .error { color: #b00020; font-size: 0.9em; }
+    #result { margin-top: 16px; padding: 12px; background: #e8f5e9; display: none; }
+  </style>
+</head>
+<body>
+  <h1>Submit a Service Request</h1>
+  <form id="request-form" novalidate>
+    <label for="full_name">Full name</label>
+    <input id="full_name" name="full_name">
+    <div class="error" data-error-for="full_name"></div>
+
+    <label for="citizenship_no">Citizenship number</label>
+    <input id="citizenship_no" name="citizenship_no" placeholder="12-01-75-01234">
+    <div class="error" data-error-for="citizenship_no"></div>
+
+    <label for="district">District</label>
+    <select id="district" name="district">
+      <option value="">-- Select --</option>
+      {% for d in districts %}<option>{{ d }}</option>{% endfor %}
+    </select>
+    <div class="error" data-error-for="district"></div>
+
+    <label for="phone">Mobile number</label>
+    <input id="phone" name="phone" placeholder="98XXXXXXXX">
+    <div class="error" data-error-for="phone"></div>
+
+    <label for="service_type">Service</label>
+    <select id="service_type" name="service_type">
+      <option value="">-- Select --</option>
+      {% for s in services %}<option>{{ s }}</option>{% endfor %}
+    </select>
+    <div class="error" data-error-for="service_type"></div>
+
+    <button type="submit">Submit request</button>
+  </form>
+
+  <div id="result" role="status">
+    Your tracking ID is <strong id="tracking-id"></strong>.
+    <a id="track-link" href="#">Track your request</a>
+  </div>
+
+  <script>
+    const form = document.getElementById("request-form");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      document.querySelectorAll("[data-error-for]").forEach(el => el.textContent = "");
+      document.getElementById("result").style.display = "none";
+
+      const body = Object.fromEntries(new FormData(form).entries());
+      const res = await fetch("/api/requests", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (res.status === 201) {
+        document.getElementById("tracking-id").textContent = data.tracking_id;
+        document.getElementById("track-link").href = "/track?id=" + data.tracking_id;
+        document.getElementById("result").style.display = "block";
+        form.reset();
+      } else if (data.errors) {
+        for (const [field, msg] of Object.entries(data.errors)) {
+          document.querySelector(`[data-error-for="${field}"]`).textContent = msg;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

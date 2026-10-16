@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Track Your Request</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 520px; margin: 40px auto; padding: 0 16px; }
+    input { padding: 8px; width: 70%; }
+    button { padding: 8px 14px; }
+    table { margin-top: 16px; border-collapse: collapse; width: 100%; }
+    td { padding: 6px 8px; border-bottom: 1px solid #ddd; }
+    .not-found { color: #b00020; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Track Your Request</h1>
+  <form method="get" action="/track">
+    <input id="tracking-input" name="id" value="{{ tracking_id }}" placeholder="SR-2026-00001">
+    <button type="submit">Track</button>
+  </form>
+
+  {% if r %}
+  <table id="request-details">
+    <tr><td>Tracking ID</td><td data-field="tracking_id">{{ r.tracking_id }}</td></tr>
+    <tr><td>Name</td><td data-field="full_name">{{ r.full_name }}</td></tr>
+    <tr><td>Citizenship no.</td><td data-field="citizenship_no">{{ r.citizenship_no }}</td></tr>
+    <tr><td>Service</td><td data-field="service_type">{{ r.service_type }}</td></tr>
+    <tr><td>Status</td><td data-field="status">{{ r.status }}</td></tr>
+    {% if r.rejection_reason %}
+    <tr><td>Reason</td><td data-field="rejection_reason">{{ r.rejection_reason }}</td></tr>
+    {% endif %}
+  </table>
+  {% elif tracking_id %}
+  <p class="not-found" id="not-found">No request found with tracking ID {{ tracking_id }}.</p>
+  {% endif %}
+</body>
+</html>
