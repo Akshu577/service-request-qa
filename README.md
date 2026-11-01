@@ -2,6 +2,8 @@
 
 ![Tests](https://github.com/Akshu577/service-request-qa/actions/workflows/tests.yml/badge.svg)
 
+**Live demo:** https://service-request-qa.onrender.com (free hosting, so the first load can take about a minute)
+
 A complete QA project on a small government-style web app: citizens submit a service request (citizenship copy, passport recommendation and so on) and track it with a tracking ID, and officers move requests through review.
 
 I wanted to practise the whole testing process, not just write a few automated tests. So I started from written requirements, designed test cases from them, automated the tests (API, browser and a basic performance check), logged the bugs I found with evidence, and fixed and retested one of them.
