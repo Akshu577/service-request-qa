@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: service-request-qa
+    runtime: python
+    plan: free
+    buildCommand: pip install flask==3.0.3 gunicorn==23.0.0
+    startCommand: gunicorn app.app:app --workers 1 --threads 4
+    envVars:
+      - key: OFFICER_TOKEN
+        generateValue: true
