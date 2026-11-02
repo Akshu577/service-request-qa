@@ -181,7 +181,8 @@ def index():
 def track():
     tracking_id = request.args.get("id", "").strip()
     r = _requests.get(tracking_id) if tracking_id else None
-    return render_template("track.html", tracking_id=tracking_id, r=r)
+    # Same masked view as the API, so the page never shows the full citizenship number (BUG-003)
+    return render_template("track.html", tracking_id=tracking_id, r=public_view(r) if r else None)
 
 
 if __name__ == "__main__":

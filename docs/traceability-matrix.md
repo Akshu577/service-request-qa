@@ -11,5 +11,5 @@ Every requirement is covered by at least one test, and every failing test is lin
 | REQ-05 Track a request | TC-07, TC-08, TC-19, TC-21, PM | ✅ Pass | |
 | REQ-06 Status rules | TC-10, TC-11, TC-12, TC-13, TC-15, PM | ❌ Fail (final status can change) | [BUG-002](bugs/BUG-002.md) |
 | REQ-07 Officer-only changes | TC-09, PM | ✅ Pass | |
-| REQ-08 Protect personal data | TC-07, TC-20 | ❌ Fail (web page) | [BUG-003](bugs/BUG-003.md) |
+| REQ-08 Protect personal data | TC-07, TC-20 | ✅ Pass (after fix) | [BUG-003](bugs/BUG-003.md) (closed) |
 | REQ-09 Response time | TC-22, PM | ✅ Pass | |

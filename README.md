@@ -18,12 +18,12 @@ The first full run had 10 failing checks out of 50, which came down to 3 bugs:
 |---|---|---|
 | [BUG-001](docs/bugs/BUG-001.md): a 9-digit mobile number is accepted | Medium | ✅ Fixed and retested |
 | [BUG-002](docs/bugs/BUG-002.md): an Approved or Rejected request can still be changed | High | ❌ Open |
-| [BUG-003](docs/bugs/BUG-003.md): the tracking page shows the full citizenship number | High | ❌ Open |
+| [BUG-003](docs/bugs/BUG-003.md): the tracking page shows the full citizenship number | High | ✅ Fixed and retested |
 
 The two I find most interesting:
 
 - **BUG-002** came from one line: `if allowed and new_status not in allowed`. For a final status, `allowed` is an empty set, which Python treats as false, so the check is skipped completely. The happy-path tests all passed. Only testing *every* final status against *every* target status (8 cases) caught it.
-- **BUG-003** is a privacy bug that only shows up in the browser. The API masks the citizenship number correctly (`XX-XX-XX-X5678`), but the web page reads the raw record. If I had only tested the API, I'd have missed it. Because tracking IDs are sequential, someone could walk through them and collect citizenship numbers.
+- **BUG-003** is a privacy bug that only shows up in the browser. The API masks the citizenship number correctly (`XX-XX-XX-X5678`), but the web page reads the raw record. If I had only tested the API, I'd have missed it. Because tracking IDs are sequential, someone could walk through them and collect citizenship numbers. I fixed it by making the page use the same masked view as the API, then retested.
 
 Full results: [test summary report](docs/test-summary.md).
 
@@ -78,7 +78,7 @@ You can also import both files from `postman/` into the Postman app. The officer
 
 ## What I'd add next
 
-- Fix and retest BUG-002 and BUG-003
+- Fix and retest BUG-002
 - Non-sequential tracking IDs (see the note in BUG-003)
 - A real load test with k6 or JMeter
 - Firefox and WebKit runs, and an accessibility check with axe

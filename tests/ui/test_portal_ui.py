@@ -1,7 +1,6 @@
 """Browser tests with Playwright (REQ-01, REQ-05, REQ-08)."""
 import re
 
-import pytest
 from playwright.sync_api import Page, expect
 
 from tests.conftest import create_request
@@ -55,7 +54,6 @@ def test_tc19_track_link_shows_current_status(page: Page):
     expect(page.locator('[data-field="status"]')).to_have_text("Submitted")
 
 
-@pytest.mark.xfail(strict=True, reason="BUG-003: track page shows full citizenship number")
 def test_tc20_track_page_masks_citizenship_number(page: Page, api):
     tid = create_request(api, citizenship_no="27-02-70-05678")["tracking_id"]
     page.goto(f"/track?id={tid}")
